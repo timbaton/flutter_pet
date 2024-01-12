@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,7 @@ class ApplicationStorage {
       : _sharedPreferences = sharedPreferences;
 
   final SharedPreferences _sharedPreferences;
+  StreamController<bool> isUpdated = StreamController<bool>();
 
   List<String> get mapList {
     String input = _sharedPreferences.getString(_kMapList) ?? "";
@@ -22,5 +24,6 @@ class ApplicationStorage {
     var json = jsonEncode(list.map((e) => e).toList());
 
     _sharedPreferences.setString(_kMapList, json);
+    isUpdated.add(true);
   }
 }
