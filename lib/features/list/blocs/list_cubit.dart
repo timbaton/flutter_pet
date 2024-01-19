@@ -1,17 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map/features/common/map_storage.dart';
 import 'package:sealed_countries/src/model/country/country.dart';
 
-import '../../di/application_storage.dart';
 import 'list_state.dart';
 
 class ListCubit extends Cubit<ListState> {
-  final ApplicationStorage _applicationStorage;
+  final MapStorage _mapStorage;
 
   ListCubit({
-    required ApplicationStorage applicationStorage,
-  })  : _applicationStorage = applicationStorage,
+    required MapStorage mapStorage,
+  })  : _mapStorage = mapStorage,
         super(ListState.initial()) {
-    List<String> selectedIds = _applicationStorage.mapList;
+    List<String> selectedIds = _mapStorage.mapList;
     List<WorldCountry> allCountries = WorldCountry.list;
 
     List<WorldCountry> selected =
@@ -30,7 +30,7 @@ class ListCubit extends Cubit<ListState> {
       selectedNew.add(country);
     }
 
-    _applicationStorage.mapList = selectedNew.map((e) => e.code).toList();
+    _mapStorage.mapList = selectedNew.map((e) => e.code).toList();
     emit(state.copyWith(selected: selectedNew));
   }
 }
